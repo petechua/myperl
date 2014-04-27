@@ -64,7 +64,7 @@ while (<>)
 
 #print "@cdn_edges";
 print $logfileHandle "There are $num_cdn_edges CDN Edges node detected in input list...";
-print "There are $num_cdn_edges CDN Edge nodes detected in input list...\n";
+print "There are $num_cdn_edges CDN Edge nodes detected in input list...\n\n";
 
 # Starting host_check for alive CDN Edges
 foreach (@cdn_edges)
@@ -129,7 +129,7 @@ sub logging
         
         mkdir $log_path, 0755 or print "Cannot create log directory or log path already exists: $!\n";
         open my $fileHandle, ">>", "/tmp/log/$log_time.log" or die "Can't open '/tmp/$log_time.log'\n";
-        print $fileHandle "remote_ip size_download speed_download http_code url\n";
+        print $fileHandle "remote_ip size_download time_total speed_download http_code url\n";
         close $fileHandle;
 }
 
@@ -177,7 +177,7 @@ sub fetch_object
 	
 	#curl -s -w "%{remote_ip} %{size_download} %{speed_download} %{http_code} %{url_effective}\n" -H 'Host: edge.swiftsg.swiftserve.com' http://da1.jp1.swiftserve.com/Pete/petelfd/8s.jpg -o /dev/null
 
-	my $fetch_url=`curl -s -w "%{remote_ip} %{size_download} %{speed_download} %{http_code} %{url_effective}\n" -H 'Host: $sub_cdn_domain' $new_cdn_url -o /dev/null`;
+	my $fetch_url=`curl -s -w "%{remote_ip} %{size_download} %{time_total} %{speed_download} %{http_code} %{url_effective}\n" -H 'Host: $sub_cdn_domain' $new_cdn_url -o /dev/null`;
 	print $fetch_url;
 
 	#open my $fileHandle, ">>", "/tmp/log/$now2.log" or die "Can't open '/tmp/$now2.log'\n";
