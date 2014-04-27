@@ -127,7 +127,7 @@ sub logging
         $log_path=$_[1];
         #print $log_time;
         
-        mkdir $log_path, 0755 or print "Cannot create log directory: $!\n";
+        mkdir $log_path, 0755 or print "Cannot create log directory or log path already exists: $!\n";
         open my $fileHandle, ">>", "/tmp/log/$log_time.log" or die "Can't open '/tmp/$log_time.log'\n";
         print $fileHandle "remote_ip size_download speed_download http_code url\n";
         close $fileHandle;
