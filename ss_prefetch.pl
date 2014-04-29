@@ -20,6 +20,7 @@ my $edge_alive;
 my @cdn_edge_alive;
 my $cdn_domain;
 my $new_cdn_url;
+my $logformat="remote_ip\t size_download\t time_total\t speed_download\t http_code\t url\n";
 
 # Declare configurable variables
 my $path_log_dir="/tmp/log";
@@ -77,13 +78,15 @@ foreach (@cdn_edges)
 }
 #print "@cdn_edge_alive"."\n";
 print "There are ".scalar @cdn_edge_alive." CDN Edge nodes detected alive...\n";
-print $logfileHandle "There are ".scalar @cdn_edge_alive." CDN Edges node detected alive...\n";
+print $logfileHandle "There are ".scalar @cdn_edge_alive." CDN Edges node detected alive...\n\n";
 
 # Starting initial request for input CDN URL
 my $initial_req_res=`curl -s -w "%{http_code}\n" $origin_url -o /dev/null`;
 if($initial_req_res==200)
 {
 	print "Initial request for CDN URL success!...\n"; 
+	#print $logfileHandle "remote_ip size_download time_total speed_download http_code url\n";
+	print $logfileHandle $logformat;
 }
 else
 {
@@ -129,7 +132,7 @@ sub logging
         
         mkdir $log_path, 0755 or print "Cannot create log directory or log path already exists: $!\n";
         open my $fileHandle, ">>", "/tmp/log/$log_time.log" or die "Can't open '/tmp/$log_time.log'\n";
-        print $fileHandle "remote_ip size_download time_total speed_download http_code url\n";
+        #print $fileHandle "remote_ip size_download time_total speed_download http_code url\n";
         close $fileHandle;
 }
 
